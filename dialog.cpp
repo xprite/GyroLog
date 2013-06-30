@@ -22,7 +22,6 @@ Dialog::Dialog(QWidget *parent) :
     // Connect slots
     connect(this->iSerialPort, SIGNAL(readyRead()), SLOT(onReadyRead()));   // Serial slot onReadyRead
     connect(this->iTimer, SIGNAL(timeout()), this, SLOT(onTimer()));    // Timer slot onTimer
-
 }
 
 Dialog::~Dialog()
