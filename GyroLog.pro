@@ -6,16 +6,18 @@
 
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 TARGET = GyroLog
 TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        dialog.cpp
+        dialog.cpp \
+    qcustomplot.cpp
 
-HEADERS  += dialog.h
+HEADERS  += dialog.h \
+    qcustomplot.h
 
 FORMS    += dialog.ui
 
