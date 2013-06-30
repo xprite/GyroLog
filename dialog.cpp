@@ -23,10 +23,13 @@ Dialog::Dialog(QWidget *parent) :
     connect(this->iSerialPort, SIGNAL(readyRead()), SLOT(onReadyRead()));   // Serial slot onReadyRead
     connect(this->iTimer, SIGNAL(timeout()), this, SLOT(onTimer()));    // Timer slot onTimer
 
-    this->xAxis = new QVector<double>(101);
-    this->yAxis = new QVector<double>(101);
+    this->xAxis = new QVector<double>(1000);
+    this->yAxis = new QVector<double>(1000);
 
     this->counter = 0;
+
+    ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
+                                    QCP::iSelectLegend | QCP::iSelectPlottables);
 
     ui->customPlot->addGraph();
     ui->customPlot->graph(0)->setData(*this->xAxis, *this->yAxis);
@@ -76,7 +79,7 @@ void Dialog::onReadyRead()
         }
         this->counter++;
         this->xAxis->push_front(counter);
-        this->yAxis->push_front(GyroX);
+        this->yAxis->push_front(GyroY);
         ui->customPlot->graph(0)->setData(*xAxis, *yAxis);
         ui->customPlot->xAxis->setRange(counter-100, counter+50);
         ui->customPlot->replot();
