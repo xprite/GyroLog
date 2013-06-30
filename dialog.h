@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QDateTime>
 
-#define DEFAULT_TIMER_TICK_TIME 100
+#define DEFAULT_TIMER_TICK_TIME 4
 
 namespace Ui {
 class Dialog;
@@ -30,6 +30,11 @@ private:
     QextSerialPort *iSerialPort;
     QTimer *iTimer;
     QFile *iFile;
+    double fRand(double fMin, double fMax);
+    QVector<double> *xAxis;
+    QVector<double> *yAxis;
+    int counter;
+
 
 public slots:
     void onTimer();

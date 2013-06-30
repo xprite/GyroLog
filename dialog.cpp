@@ -22,6 +22,21 @@ Dialog::Dialog(QWidget *parent) :
     // Connect slots
     connect(this->iSerialPort, SIGNAL(readyRead()), SLOT(onReadyRead()));   // Serial slot onReadyRead
     connect(this->iTimer, SIGNAL(timeout()), this, SLOT(onTimer()));    // Timer slot onTimer
+
+    this->xAxis = new QVector<double>(101);
+    this->yAxis = new QVector<double>(101);
+
+    this->counter = 0;
+
+    ui->customPlot->addGraph();
+    ui->customPlot->graph(0)->setData(*this->xAxis, *this->yAxis);
+    ui->customPlot->xAxis->setLabel("x");
+    ui->customPlot->yAxis->setLabel("y");
+    ui->customPlot->xAxis->setRange(-1, 101);
+    ui->customPlot->yAxis->setRange(-32768, +32767 );
+
+    ui->customPlot->replot();
+
 }
 
 Dialog::~Dialog()
@@ -31,6 +46,13 @@ Dialog::~Dialog()
     delete(this->iTimer);
     delete(this->iFile);
 }
+
+double Dialog::fRand(double fMin, double fMax)
+{
+    double f = (double)rand() / RAND_MAX;
+    return fMin + f * (fMax - fMin);
+}
+
 
 void Dialog::onTimer()
 {
@@ -52,6 +74,14 @@ void Dialog::onReadyRead()
             this->iFile->flush();
             this->iFile->close();
         }
+        this->counter++;
+        this->xAxis->push_front(counter);
+        this->yAxis->push_front(GyroX);
+        ui->customPlot->graph(0)->setData(*xAxis, *yAxis);
+        ui->customPlot->xAxis->setRange(counter-100, counter+50);
+        ui->customPlot->replot();
+        this->xAxis->pop_back();
+        this->yAxis->pop_back();
     }
 }
 
